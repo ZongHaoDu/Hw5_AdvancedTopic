@@ -8,6 +8,7 @@ from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import cosine_distances
 import torch
 from transformers import GPT2LMHeadModel, GPT2TokenizerFast
+import nltk.downloader
 
 # Helper to download nltk data silently
 @st.cache_resource
