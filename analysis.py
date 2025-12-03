@@ -22,7 +22,7 @@ def download_nltk_data():
     for resource_path, resource_id in resources.items():
         try:
             nltk.data.find(resource_path)
-        except nltk.downloader.DownloadError:
+        except LookupError:  # <--- 直接捕捉 LookupError，這是 Python 內建的，保證不會錯
             nltk.download(resource_id, quiet=True)
 
 @st.cache_data
