@@ -2,6 +2,7 @@ import streamlit as st
 import analysis
 import plotting
 import ui
+import numpy as np
 
 def main():
     st.set_page_config(layout="wide", page_title="Advanced AI Text Detector")
@@ -43,6 +44,11 @@ def main():
 
                     # --- 2. Calculate Final Score ---
                     final_score = analysis.calculate_final_score(all_metrics)
+
+                    # Handle potential NaN score if metrics are zero or invalid
+                    if final_score is None or np.isnan(final_score):
+                        st.warning("Could not reliably compute a final score, likely due to very short or unusual input text. Score has been defaulted to 0.")
+                        final_score = 0
 
                     st.success("分析完成！(Analysis Complete!)")
                     st.divider()
