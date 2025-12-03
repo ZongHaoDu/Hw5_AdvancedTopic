@@ -15,6 +15,7 @@ import nltk.downloader
 def download_nltk_data():
     resources = {
         "tokenizers/punkt": "punkt",
+        "tokenizers/punkt_tab": "punkt_tab",
         "taggers/averaged_perceptron_tagger": "averaged_perceptron_tagger",
         "corpora/stopwords": "stopwords"
     }
@@ -24,6 +25,7 @@ def download_nltk_data():
         except nltk.downloader.DownloadError:
             nltk.download(resource_id, quiet=True)
 
+@st.cache_data
 def calculate_burstiness(text: str):
     """
     Calculates the burstiness of a text, defined as the coefficient of variation of sentence lengths.
@@ -52,6 +54,7 @@ def calculate_burstiness(text: str):
     
     return burstiness_score, sent_lengths
 
+@st.cache_data
 def calculate_stylometry(text: str):
     """
     Calculates stylometric features: Type-Token Ratio (TTR) and POS distribution.
@@ -107,6 +110,7 @@ def calculate_stylometry(text: str):
     
     return ttr, pos_dist
 
+@st.cache_data
 def calculate_zipf(text: str):
     """
     Calculates word frequency distribution for Zipf's Law analysis.
@@ -145,6 +149,7 @@ def load_embedding_model():
     """Loads the sentence-transformer model and caches it."""
     return SentenceTransformer('all-MiniLM-L6-v2')
 
+@st.cache_data
 def calculate_semantic_drift(text: str):
     """
     Calculates semantic drift and variance using sentence embeddings.
@@ -193,8 +198,9 @@ def calculate_semantic_drift(text: str):
 @st.cache_resource
 def load_perplexity_model():
     """Loads the GPT-2 model and tokenizer for perplexity calculation."""
-    return GPT2LMHeadModel.from_pretrained('gpt2'), GPT2TokenizerFast.from_pretrained('gpt2')
+    return GPT2LMHeadModel.from_pretrained('distilgpt2'), GPT2TokenizerFast.from_pretrained('distilgpt2')
 
+@st.cache_data
 def calculate_perplexity(text: str):
     """
     Calculates perplexity of a text using a sliding window approach with GPT-2.
