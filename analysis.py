@@ -15,14 +15,17 @@ import nltk.downloader
 def download_nltk_data():
     resources = {
         "tokenizers/punkt": "punkt",
-        "tokenizers/punkt_tab": "punkt_tab",
-        "taggers/averaged_perceptron_tagger": "averaged_perceptron_tagger",
+        "tokenizers/punkt_tab": "punkt_tab", # Python 3.13 必備
+        "taggers/averaged_perceptron_tagger": "averaged_perceptron_tagger", # 舊版 (保險起見保留)
+        "taggers/averaged_perceptron_tagger_eng": "averaged_perceptron_tagger_eng", # <--- 新增這一行！NLTK 3.9+ 必備
         "corpora/stopwords": "stopwords"
     }
     for resource_path, resource_id in resources.items():
         try:
+            # 嘗試尋找資源
             nltk.data.find(resource_path)
-        except LookupError:  # <--- 直接捕捉 LookupError，這是 Python 內建的，保證不會錯
+        except LookupError:
+            # 找不到就下載
             nltk.download(resource_id, quiet=True)
 
 @st.cache_data
